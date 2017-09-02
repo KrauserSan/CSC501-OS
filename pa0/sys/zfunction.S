@@ -5,7 +5,7 @@ zfunction:
 	movl %esp, %ebp
 	movl 8(%ebp), %eax
 	andl $0xff803fff, %eax
-	sall $4, %eax
+	shll $4, %eax
 	leave
 	ret
 

@@ -13,6 +13,7 @@ int main()
 {
 	kprintf("\n\nHello World, Xinu lives\n\n");
 	kprintf("yolo:\n");
-	kprintf("zfunction(0xaabbccdd) = 0x%lX\n",zfunction(0xaabbccdd));
+	kprintf("zfunction input: 0xaabbccdd\n");
+	kprintf("zfunction output: 0x%lX\n",zfunction(0xaabbccdd));
 	return 0;
 }
