@@ -18,5 +18,6 @@ int main()
 	kprintf("\n............... printsegaddress function.............\n");
 	printsegaddress();
 	kprintf("\n...............printtos function.....................\n");
+	printtos();
 	return 0;
 }
