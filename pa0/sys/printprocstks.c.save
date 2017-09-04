@@ -1,0 +1,13 @@
+#include <conf.h>
+#include <kernel.h>
+#include <proc.h>
+#include <stdio.h>
+
+unsigned long *esp;
+
+void printprocstks(int priority){
+
+	struct pentry *proc;
+	for (int pid  = 0; pid < NPROC
+
+}
