@@ -11,12 +11,14 @@ void printtos(){
     kprintf("After[0x%08X]: 0x%08X\n", esp, *esp);
   
     kprintf("    element[0x%08X]: 0x%08X\n", 
+		esp, *esp);
+    kprintf("    element[0x%08X]: 0x%08X\n", 
+		esp, *esp);
+    kprintf("    element[0x%08X]: 0x%08X\n", 
 		esp+1, *(esp+1));
     kprintf("    element[0x%08X]: 0x%08X\n", 
 		esp+2, *(esp+2));
     kprintf("    element[0x%08X]: 0x%08X\n", 
 		esp+3, *(esp+3));
-    kprintf("    element[0x%08X]: 0x%08X\n", 
-		esp+4, *(esp+4));
 
 }
