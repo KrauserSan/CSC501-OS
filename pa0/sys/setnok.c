@@ -4,6 +4,7 @@
 #include <kernel.h>
 #include <proc.h>
 #include <stdio.h>
+#include "lab0.h"
 
 /*------------------------------------------------------------------------
  *  setnok  -  set next-of-kin (notified at death) for a given process
@@ -11,6 +12,9 @@
  */
 SYSCALL	setnok(int nok, int pid)
 {
+	if(flag){
+		sysFreq[currpid][14]++;
+	}
 	STATWORD ps;    
 	struct	pentry	*pptr;
 

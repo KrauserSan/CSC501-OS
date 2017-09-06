@@ -6,6 +6,7 @@
 #include <q.h>
 #include <sem.h>
 #include <stdio.h>
+#include "lab0.h"
 
 /*------------------------------------------------------------------------
  * wait  --  make current process wait on a semaphore
@@ -13,6 +14,9 @@
  */
 SYSCALL	wait(int sem)
 {
+	if(flag){
+		sysFreq[currpid][26]++;
+	}
 	STATWORD ps;    
 	struct	sentry	*sptr;
 	struct	pentry	*pptr;

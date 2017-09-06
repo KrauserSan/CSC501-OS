@@ -6,6 +6,7 @@
 #include <q.h>
 #include <sem.h>
 #include <stdio.h>
+#include "lab0.h"
 
 /*------------------------------------------------------------------------
  * signal  --  signal a semaphore, releasing one waiting process
@@ -13,6 +14,9 @@
  */
 SYSCALL signal(int sem)
 {
+	if(flag){
+		sysFreq[currpid][17]++;
+	}
 	STATWORD ps;    
 	register struct	sentry	*sptr;
 

@@ -4,6 +4,7 @@
 #include <kernel.h>
 #include <proc.h>
 #include <stdio.h>
+#include "lab0.h"
 
 /*------------------------------------------------------------------------
  *  receive  -  wait for a message and return it
@@ -11,6 +12,9 @@
  */
 SYSCALL	receive()
 {
+	if(flag){
+		sysFreq[currpid][6]++;
+	}
 	STATWORD ps;    
 	struct	pentry	*pptr;
 	WORD	msg;

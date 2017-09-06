@@ -2,8 +2,10 @@
 
 #include <conf.h>
 #include <kernel.h>
+#include <proc.h>
 #include <mem.h>
 #include <stdio.h>
+#include "lab0.h"
 
 /*------------------------------------------------------------------------
  *  freemem  --  free a memory block, returning it to memlist
@@ -11,6 +13,9 @@
  */
 SYSCALL	freemem(struct mblock *block, unsigned size)
 {
+	if(flag){
+		sysFreq[currpid][0]++;
+	}
 	STATWORD ps;    
 	struct	mblock	*p, *q;
 	unsigned top;

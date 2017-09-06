@@ -4,6 +4,7 @@
 #include <kernel.h>
 #include <proc.h>
 #include <stdio.h>
+#include "lab0.h"
 
 /*------------------------------------------------------------------------
  * resume  --  unsuspend a process, making it ready; return the priority
@@ -11,6 +12,9 @@
  */
 SYSCALL resume(int pid)
 {
+	if(flag){
+		sysFreq[currpid][9]++;
+	}
 	STATWORD ps;    
 	struct	pentry	*pptr;		/* pointer to proc. tab. entry	*/
 	int	prio;			/* priority to return		*/

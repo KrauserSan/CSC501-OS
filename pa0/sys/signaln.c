@@ -6,6 +6,7 @@
 #include <q.h>
 #include <sem.h>
 #include <stdio.h>
+#include "lab0.h"
 
 /*------------------------------------------------------------------------
  *  signaln -- signal a semaphore n times
@@ -13,6 +14,9 @@
  */
 SYSCALL signaln(int sem, int count)
 {
+	if(flag){
+		sysFreq[currpid][17]++;
+	}
 	STATWORD ps;    
 	struct	sentry	*sptr;
 

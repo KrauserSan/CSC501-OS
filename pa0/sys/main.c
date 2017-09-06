@@ -4,6 +4,7 @@
 #include <kernel.h>
 #include <proc.h>
 #include <stdio.h>
+//#include "lab0.h"
 
 
 int prX;
@@ -35,5 +36,14 @@ int main()
 	printtos();
 	kprintf("\n...............printprocstks function................\n");
 	printprocstks(2);
+	kprintf("\n..................printsyscallsummary function.........\n");
+	syscallsummary_start();        
+	resume(prX = create(prch,2000,20,"proc B",1,'A'));
+	sleep(2);
+	getpid();
+	getpid();
+	getpid();
+	syscallsummary_stop();
+	printsyscallsummary();	
 	return 0;
 }

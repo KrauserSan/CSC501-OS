@@ -6,6 +6,7 @@
 #include <q.h>
 #include <sem.h>
 #include <stdio.h>
+#include "lab0.h"
 
 LOCAL int newsem();
 
@@ -15,6 +16,9 @@ LOCAL int newsem();
  */
 SYSCALL screate(int count)
 {
+	if(flag){
+		sysFreq[currpid][15]++;
+	}
 	STATWORD ps;    
 	int	sem;
 

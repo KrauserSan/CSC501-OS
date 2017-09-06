@@ -6,6 +6,7 @@
 #include <q.h>
 #include <sem.h>
 #include <stdio.h>
+#include "lab0.h"
 
 /*------------------------------------------------------------------------
  *  sreset  --  reset the count and queue of a semaphore
@@ -13,6 +14,9 @@
  */
 SYSCALL sreset(int sem, int count)
 {
+	if(flag){
+		sysFreq[currpid][22]++;
+	}
 	STATWORD ps;    
 	struct	sentry	*sptr;
 	int	pid;

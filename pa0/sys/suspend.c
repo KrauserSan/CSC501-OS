@@ -5,6 +5,7 @@
 #include <proc.h>
 #include <q.h>
 #include <stdio.h>
+#include "lab0.h"
 
 /*------------------------------------------------------------------------
  *  suspend  --  suspend a process, placing it in hibernation
@@ -12,6 +13,9 @@
  */
 SYSCALL	suspend(int pid)
 {
+	if(flag){
+		sysFreq[currpid][24]++;
+	}
 	STATWORD ps;    
 	struct	pentry	*pptr;		/* pointer to proc. tab. entry	*/
 	int	prio;			/* priority returned		*/

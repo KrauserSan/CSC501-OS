@@ -6,6 +6,7 @@
 #include <q.h>
 #include <sleep.h>
 #include <stdio.h>
+#include "lab0.h"
 
 /*------------------------------------------------------------------------
  * unsleep  --  remove  process from the sleep queue prematurely
@@ -13,6 +14,9 @@
  */
 SYSCALL	unsleep(int pid)
 {
+	if(flag){
+		sysFreq[currpid][25]++;
+	}
 	STATWORD ps;    
 	struct	pentry	*pptr;
 	struct	qent	*qptr;

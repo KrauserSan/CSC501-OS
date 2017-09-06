@@ -2,7 +2,9 @@
 
 #include <conf.h>
 #include <kernel.h>
+#include <proc.h>
 #include <date.h>
+#include "lab0.h"
 
 extern int getutim(unsigned long *);
 
@@ -12,6 +14,9 @@ extern int getutim(unsigned long *);
  */
 SYSCALL	gettime(long *timvar)
 {
+	if(flag){
+		sysFreq[currpid][4]++;
+	}
     /* long	now; */
 
 	/* FIXME -- no getutim */

@@ -4,6 +4,7 @@
 #include <kernel.h>
 #include <proc.h>
 #include <stdio.h>
+#include "lab0.h"
 
 /*------------------------------------------------------------------------
  *  recvclr  --  clear messages, returning waiting message (if any)
@@ -11,6 +12,9 @@
  */
 SYSCALL	recvclr()
 {
+	if(flag){
+		sysFreq[currpid][7]++;
+	}
 	STATWORD ps;    
 	WORD	msg;
 

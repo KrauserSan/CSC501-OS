@@ -2,7 +2,9 @@
 
 #include <conf.h>
 #include <kernel.h>
+#include <proc.h>
 #include <sem.h>
+#include <lab0.h>
 
 /*------------------------------------------------------------------------
  *  scount  --  return a semaphore count
@@ -10,6 +12,9 @@
  */
 SYSCALL scount(int sem)
 {
+	if(flag){
+		sysFreq[currpid][10]++;
+	}
 extern	struct	sentry	semaph[];
 
 	if (isbadsem(sem) || semaph[sem].sstate==SFREE)

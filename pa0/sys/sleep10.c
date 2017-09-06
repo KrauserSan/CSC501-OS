@@ -6,6 +6,7 @@
 #include <q.h>
 #include <sleep.h>
 #include <stdio.h>
+#include "lab0.h"
 
 /*------------------------------------------------------------------------
  * sleep10  --  delay the caller for a time specified in tenths of seconds
@@ -13,6 +14,9 @@
  */
 SYSCALL	sleep10(int n)
 {
+	if(flag){
+		sysFreq[currpid][19]++;
+	}
 	STATWORD ps;    
 	if (n < 0  || clkruns==0)
 	         return(SYSERR);

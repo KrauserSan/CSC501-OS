@@ -6,6 +6,7 @@
 #include <q.h>
 #include <sleep.h>
 #include <stdio.h>
+#include "lab0.h"
 
 /*------------------------------------------------------------------------
  * sleep  --  delay the calling process n seconds
@@ -13,6 +14,9 @@
  */
 SYSCALL	sleep(int n)
 {
+	if(flag){
+		sysFreq[currpid][18]++;
+	}
 	STATWORD ps;    
 	if (n<0 || clkruns==0)
 		return(SYSERR);

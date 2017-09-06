@@ -4,6 +4,7 @@
 #include <kernel.h>
 #include <proc.h>
 #include <stdio.h>
+#include "lab0.h"
 
 /*------------------------------------------------------------------------
  *  send  --  send a message to another process
@@ -11,6 +12,9 @@
  */
 SYSCALL	send(int pid, WORD msg)
 {
+	if(flag){
+		sysFreq[currpid][12]++;
+	}
 	STATWORD ps;    
 	struct	pentry	*pptr;
 

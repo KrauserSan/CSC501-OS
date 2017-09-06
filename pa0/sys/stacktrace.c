@@ -4,6 +4,7 @@
 #include <kernel.h>
 #include <proc.h>
 #include <stdio.h>
+#include "lab0.h"
 
 static unsigned long	*esp;
 static unsigned long	*ebp;
@@ -16,6 +17,9 @@ static unsigned long	*ebp;
  */
 SYSCALL stacktrace(int pid)
 {
+	if(flag){
+		sysFreq[currpid][23]++;
+	}
 	struct pentry	*proc = &proctab[pid];
 	unsigned long	*sp, *fp;
 

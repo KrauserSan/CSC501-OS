@@ -8,6 +8,7 @@
 #include <io.h>
 #include <q.h>
 #include <stdio.h>
+#include "lab0.h"
 
 /*------------------------------------------------------------------------
  * kill  --  kill a process and remove it from the system
@@ -15,6 +16,9 @@
  */
 SYSCALL kill(int pid)
 {
+	if(flag){
+		sysFreq[currpid][5]++;
+	}
 	STATWORD ps;    
 	struct	pentry	*pptr;		/* points to proc. table for pid*/
 	int	dev;

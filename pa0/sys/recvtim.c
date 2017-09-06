@@ -1,3 +1,4 @@
+
 /* recvtim.c - recvtim */
 
 #include <conf.h>
@@ -6,6 +7,7 @@
 #include <q.h>
 #include <sleep.h>
 #include <stdio.h>
+#include "lab0.h"
 
 /*------------------------------------------------------------------------
  *  recvtim  -  wait to receive a message or timeout and return result
@@ -13,6 +15,9 @@
  */
 SYSCALL	recvtim(int maxwait)
 {
+	if(flag){
+		sysFreq[currpid][8]++;
+	}
 	STATWORD ps;    
 	struct	pentry	*pptr;
 	int	msg;
