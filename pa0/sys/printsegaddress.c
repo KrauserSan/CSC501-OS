@@ -1,8 +1,8 @@
 #include <stdio.h>
 
-extern long etext;
-extern long edata;
-extern long end;
+extern int etext;
+extern int edata;
+extern int end;
 
 void printsegaddress(){
 

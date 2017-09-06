@@ -43,8 +43,8 @@ void printsyscallsummary(){
 			kprintf("\nProcess [pid:%s %d]\n",proctab[i].pname, i);
 			for(j = 0;j<27;j++){
 				if(sysFreq[i][j]){
-					kprintf("Syscall: %s, count: %d, average execution time: %d(ms)\n",
-						sysname[j],sysFreq[i][j],sysTime[i][j]);
+					kprintf("\tSyscall: %s, count: %d, average execution time: %d(ms)\n",
+						sysname[j],sysFreq[i][j],(sysTime[i][j]/sysFreq[i][j]));
 				}
 			}
 		}

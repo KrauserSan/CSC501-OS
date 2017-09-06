@@ -1,0 +1,45 @@
+Question 1.
+Assuming etext begins at 0x0.
+According to 
+etext ends at 0x00019073
+edata 
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Question 2.
+
+TOS before calling printtos() = 0x00ffeff4
+TOS after calling the printtos() = 0x00ffefec
+Difference between the two points = 0x08. 
+
+	| stack content	|
+	| of main() 	| <- TOS in main()
+	| pushed last	|
+	|		|
+	+---------------+
+	|		|
+	| Return address|   
+	| of main()	| <- When printtos is called. Pushed by call instruction
+	|		|
+	+---------------+
+	|		|
+	| old EBP value | <-  TOS after calling printtos. Set by called function.
+	| is pushed	|
+	|		|
+	+---------------+
+
+So, the return address of main() and the old EBP value are pushed onto the stack between the points
+before and after calling of the printtos() function.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Question 3.
+
+The byte order adopted by the host machine is little endian. 
+This can be found in printtos() functions. Adding (int) 1 to the esp value of 0xffefa0 makes it 0xffefa4. So, the 4 bytes are added at the right side.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Question 4.
+
+ 
