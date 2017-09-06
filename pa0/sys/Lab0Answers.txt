@@ -42,4 +42,19 @@ This can be found in printtos() functions. Adding (int) 1 to the esp value of 0x
 
 Question 4.
 
- 
+mov : mov instruction copies data from first operand to the item mentioned in second operand. 
+Example. movl %ebp, %eax -> copies content of register ebp into register eax.
+
+push : pushes the operand on top of the stack by decreasing the value of esp by 4 and adding the data of the operand in the memory address of %esp.
+Example. push %ebp -> pushes the content of register ebp on top of the stack. 
+
+pusha : pushes all the general purposes registers onto the stack in the following order - AX, CX, DX, BX, SP, BP, SI, DI. 
+Example. pusha
+
+pop : removes the data from the top of the stack into the operand. Content at the memory address of %esp is removed and increments the value of %esp by 4.
+Example. pop %eax -> pops the top element of the stack and puts it into %eax register.
+
+popa : Removes all the general purpose registers from the stack in the reverse order of pusha, i.e, DI, SI, BP, SP, BX, DX, CX, AX.
+Example. popa
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
