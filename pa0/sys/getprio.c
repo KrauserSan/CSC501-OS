@@ -10,9 +10,12 @@
  * getprio -- return the scheduling priority of a given process
  *------------------------------------------------------------------------
  */
+
+extern unsigned long ctr1000;
 SYSCALL getprio(int pid)
 {
-	if(flag){
+	unsigned long start = ctr1000;
+	if(flag==2){
 		sysFreq[currpid][3]++;
 	}
 	STATWORD ps;    
@@ -24,5 +27,9 @@ SYSCALL getprio(int pid)
 		return(SYSERR);
 	}
 	restore(ps);
+	unsigned long stop = ctr1000 - start;
+	if(flag==2){
+		sysTime[currpid][3] = sysTime[currpid][3] + stop;
+	}
 	return(pptr->pprio);
 }

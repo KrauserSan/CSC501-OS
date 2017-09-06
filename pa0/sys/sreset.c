@@ -7,14 +7,15 @@
 #include <sem.h>
 #include <stdio.h>
 #include "lab0.h"
-
 /*------------------------------------------------------------------------
  *  sreset  --  reset the count and queue of a semaphore
  *------------------------------------------------------------------------
  */
+extern unsigned long ctr1000;
 SYSCALL sreset(int sem, int count)
 {
-	if(flag){
+	unsigned long start = ctr1000;
+	if(flag==2){
 		sysFreq[currpid][22]++;
 	}
 	STATWORD ps;    
@@ -34,5 +35,9 @@ SYSCALL sreset(int sem, int count)
 	sptr->semcnt = count;
 	resched();
 	restore(ps);
+	unsigned long stop = ctr1000 - start;
+	if(flag==2){
+		sysTime[currpid][22] = sysTime[currpid][22] + stop;
+	}
 	return(OK);
 }

@@ -6,14 +6,15 @@
 #include <q.h>
 #include <stdio.h>
 #include "lab0.h"
-
 /*------------------------------------------------------------------------
  *  suspend  --  suspend a process, placing it in hibernation
  *------------------------------------------------------------------------
  */
+extern unsigned long ctr1000;
 SYSCALL	suspend(int pid)
-{
-	if(flag){
+{	
+	unsigned long start = ctr1000;
+	if(flag==2){
 		sysFreq[currpid][24]++;
 	}
 	STATWORD ps;    
@@ -36,5 +37,9 @@ SYSCALL	suspend(int pid)
 	}
 	prio = pptr->pprio;
 	restore(ps);
+	unsigned long stop = ctr1000 - start;
+	if(flag==2){
+		sysTime[currpid][24] = sysTime[currpid][24] + stop;
+	}
 	return(prio);
 }

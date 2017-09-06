@@ -388,8 +388,8 @@ freebuf.o: ../sys/freebuf.c /usr/include/stdc-predef.h ../h/conf.h \
  ../h/kernel.h ../h/systypes.h ../h/mem.h ../h/mark.h ../h/bufpool.h \
  ../h/stdio.h
 freemem.o: ../sys/freemem.c /usr/include/stdc-predef.h ../h/conf.h \
- ../h/kernel.h ../h/systypes.h ../h/mem.h ../h/proc.h ../h/stdio.h \
- ../h/lab0.h
+ ../h/kernel.h ../h/systypes.h ../h/mem.h ../h/stdio.h ../h/lab0.h \
+ ../h/proc.h
 getbuf.o: ../sys/getbuf.c /usr/include/stdc-predef.h ../h/conf.h \
  ../h/kernel.h ../h/systypes.h ../h/mem.h ../h/mark.h ../h/bufpool.h \
  ../h/stdio.h
@@ -407,8 +407,8 @@ getprio.o: ../sys/getprio.c /usr/include/stdc-predef.h ../h/conf.h \
 getstk.o: ../sys/getstk.c /usr/include/stdc-predef.h ../h/conf.h \
  ../h/kernel.h ../h/systypes.h ../h/mem.h ../h/stdio.h
 gettime.o: ../sys/gettime.c /usr/include/stdc-predef.h ../h/conf.h \
- ../h/kernel.h ../h/systypes.h ../h/mem.h ../h/proc.h ../h/date.h \
- ../h/lab0.h
+ ../h/kernel.h ../h/systypes.h ../h/mem.h ../h/date.h ../h/lab0.h \
+ ../h/proc.h
 gpq.o: ../sys/gpq.c /usr/include/stdc-predef.h ../h/conf.h ../h/kernel.h \
  ../h/systypes.h ../h/mem.h ../h/q.h ../h/stdio.h
 i386.o: ../sys/i386.c /usr/include/stdc-predef.h ../h/icu.h ../h/i386.h \
@@ -435,7 +435,8 @@ kprintf.o: ../sys/kprintf.c /usr/include/stdc-predef.h ../h/conf.h \
 kputc.o: ../sys/kputc.c /usr/include/stdc-predef.h ../h/conf.h \
  ../h/kernel.h ../h/systypes.h ../h/mem.h ../h/tty.h
 main.o: ../sys/main.c /usr/include/stdc-predef.h ../h/conf.h \
- ../h/kernel.h ../h/systypes.h ../h/mem.h ../h/proc.h ../h/stdio.h
+ ../h/kernel.h ../h/systypes.h ../h/mem.h ../h/proc.h ../h/stdio.h \
+ ../h/lab0.h
 mark.o: ../sys/mark.c /usr/include/stdc-predef.h ../h/conf.h \
  ../h/kernel.h ../h/systypes.h ../h/mem.h ../h/mark.h
 mkpool.o: ../sys/mkpool.c /usr/include/stdc-predef.h ../h/conf.h \
@@ -484,8 +485,8 @@ resume.o: ../sys/resume.c /usr/include/stdc-predef.h ../h/conf.h \
  ../h/kernel.h ../h/systypes.h ../h/mem.h ../h/proc.h ../h/stdio.h \
  ../h/lab0.h
 scount.o: ../sys/scount.c /usr/include/stdc-predef.h ../h/conf.h \
- ../h/kernel.h ../h/systypes.h ../h/mem.h ../h/proc.h ../h/sem.h \
- ../h/lab0.h
+ ../h/kernel.h ../h/systypes.h ../h/mem.h ../h/sem.h ../h/lab0.h \
+ ../h/proc.h
 screate.o: ../sys/screate.c /usr/include/stdc-predef.h ../h/conf.h \
  ../h/kernel.h ../h/systypes.h ../h/mem.h ../h/proc.h ../h/q.h ../h/sem.h \
  ../h/stdio.h ../h/lab0.h

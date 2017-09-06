@@ -7,14 +7,15 @@
 #include <sleep.h>
 #include <stdio.h>
 #include "lab0.h"
-
 /*------------------------------------------------------------------------
  * unsleep  --  remove  process from the sleep queue prematurely
  *------------------------------------------------------------------------
  */
+extern unsigned long ctr1000;
 SYSCALL	unsleep(int pid)
 {
-	if(flag){
+	unsigned long start = ctr1000;
+	if(flag==2){
 		sysFreq[currpid][25]++;
 	}
 	STATWORD ps;    
@@ -40,5 +41,9 @@ SYSCALL	unsleep(int pid)
 	else
 		slnempty = FALSE;
         restore(ps);
+	unsigned long stop = ctr1000 - start;
+	if(flag==2){
+		sysTime[currpid][25] = sysTime[currpid][25] + stop;
+	}
 	return(OK);
 }

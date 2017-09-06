@@ -1,4 +1,3 @@
-
 /* recvtim.c - recvtim */
 
 #include <conf.h>
@@ -13,9 +12,11 @@
  *  recvtim  -  wait to receive a message or timeout and return result
  *------------------------------------------------------------------------
  */
+extern unsigned long ctr1000;
 SYSCALL	recvtim(int maxwait)
 {
-	if(flag){
+	unsigned long start = ctr1000;
+	if(flag==2){
 		sysFreq[currpid][8]++;
 	}
 	STATWORD ps;    
@@ -40,5 +41,9 @@ SYSCALL	recvtim(int maxwait)
 		msg = TIMEOUT;
 	}
 	restore(ps);
+	unsigned long stop = ctr1000 - start;
+	if(flag==2){
+		sysTime[currpid][8] = sysTime[currpid][8] + stop;
+	}
 	return(msg);
 }

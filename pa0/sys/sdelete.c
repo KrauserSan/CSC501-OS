@@ -12,9 +12,11 @@
  * sdelete  --  delete a semaphore by releasing its table entry
  *------------------------------------------------------------------------
  */
+extern unsigned long ctr1000;
 SYSCALL sdelete(int sem)
 {
-	if(flag){
+	unsigned long start = ctr1000;
+	if(flag==2){
 		sysFreq[currpid][11]++;
 	}
 	STATWORD ps;    
@@ -37,5 +39,9 @@ SYSCALL sdelete(int sem)
 		resched();
 	}
 	restore(ps);
+	unsigned long stop = ctr1000 - start;
+	if(flag==2){
+		sysTime[currpid][11] = sysTime[currpid][11] + stop;
+	}
 	return(OK);
 }

@@ -12,9 +12,11 @@
  * sleep  --  delay the calling process n seconds
  *------------------------------------------------------------------------
  */
+extern unsigned long ctr1000;
 SYSCALL	sleep(int n)
 {
-	if(flag){
+	unsigned long start = ctr1000;
+	if(flag==2){
 		sysFreq[currpid][18]++;
 	}
 	STATWORD ps;    
@@ -32,5 +34,9 @@ SYSCALL	sleep(int n)
 	}
 	if (n > 0)
 		sleep10(10*n);
+	unsigned long stop = ctr1000 - start;
+	if(flag==2){
+		sysTime[currpid][18] = sysTime[currpid][18] + stop;
+	}
 	return(OK);
 }

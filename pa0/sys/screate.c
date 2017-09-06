@@ -14,9 +14,11 @@ LOCAL int newsem();
  * screate  --  create and initialize a semaphore, returning its id
  *------------------------------------------------------------------------
  */
+extern unsigned long ctr1000;
 SYSCALL screate(int count)
 {
-	if(flag){
+	unsigned long start = ctr1000;
+	if(flag==2){
 		sysFreq[currpid][15]++;
 	}
 	STATWORD ps;    
@@ -30,6 +32,10 @@ SYSCALL screate(int count)
 	semaph[sem].semcnt = count;
 	/* sqhead and sqtail were initialized at system startup */
 	restore(ps);
+	unsigned long stop = ctr1000 - start;
+	if(flag==2){
+		sysTime[currpid][15] = sysTime[currpid][15] + stop;
+	}
 	return(sem);
 }
 

@@ -12,9 +12,12 @@
  * sleep10  --  delay the caller for a time specified in tenths of seconds
  *------------------------------------------------------------------------
  */
+
+extern unsigned long ctr1000;
 SYSCALL	sleep10(int n)
 {
-	if(flag){
+	unsigned long start = ctr1000;
+	if(flag==2){
 		sysFreq[currpid][19]++;
 	}
 	STATWORD ps;    
@@ -31,5 +34,9 @@ SYSCALL	sleep10(int n)
 	}
 	resched();
         restore(ps);
+	unsigned long stop = ctr1000 - start;
+	if(flag == 2){
+		sysTime[currpid][19] = sysTime[currpid][19] + stop;
+	}
 	return(OK);
 }

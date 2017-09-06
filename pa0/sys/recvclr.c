@@ -10,9 +10,11 @@
  *  recvclr  --  clear messages, returning waiting message (if any)
  *------------------------------------------------------------------------
  */
+extern unsigned long ctr1000;
 SYSCALL	recvclr()
 {
-	if(flag){
+	unsigned long start = ctr1000;
+	if(flag==2){
 		sysFreq[currpid][7]++;
 	}
 	STATWORD ps;    
@@ -25,5 +27,9 @@ SYSCALL	recvclr()
 	} else
 		msg = OK;
 	restore(ps);
+	unsigned long stop = ctr1000 - start;
+	if(flag==2){
+		sysTime[currpid][7] = sysTime[currpid][7] + stop;
+	}
 	return(msg);
 }

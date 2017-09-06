@@ -1,4 +1,4 @@
-/* getpid.c - getpid */
+/* setdev.c - setdev */
 
 #include <conf.h>
 #include <kernel.h>
@@ -6,18 +6,21 @@
 #include "lab0.h"
 
 /*------------------------------------------------------------------------
- * getpid  --  get the process id of currently executing process
+ *  setdev  -  set the two device entries in the process table entry
  *------------------------------------------------------------------------
  */
-
 extern unsigned long ctr1000;
-SYSCALL getpid()
+SYSCALL	setdev(int pid, int dev1, int dev2)
 {
 	unsigned long start = ctr1000;
-	unsigned long stop = ctr1000 - start;
 	if(flag==2){
-		sysFreq[currpid][2]++;
-		sysTime[currpid][2] = sysTime[currpid][2] + stop;
-	}
-	return(currpid);
+		sysFeq
+	short	*nxtdev;
+
+	if (isbadpid(pid))
+		return(SYSERR);
+	nxtdev = (short *) proctab[pid].pdevs;
+	*nxtdev++ = dev1;
+	*nxtdev = dev2;
+	return(OK);
 }

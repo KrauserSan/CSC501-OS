@@ -14,9 +14,12 @@
  * kill  --  kill a process and remove it from the system
  *------------------------------------------------------------------------
  */
+
+extern unsigned long ctr1000;
 SYSCALL kill(int pid)
 {
-	if(flag){
+	unsigned long start = ctr1000;
+	if(flag==2){
 		sysFreq[currpid][5]++;
 	}
 	STATWORD ps;    
@@ -61,5 +64,9 @@ SYSCALL kill(int pid)
 	default:	pptr->pstate = PRFREE;
 	}
 	restore(ps);
+	unsigned long stop = ctr1000 - start;
+	if(flag==2){
+		sysTime[currpid][5] = sysTime[currpid][5] + stop;
+	}
 	return(OK);
 }

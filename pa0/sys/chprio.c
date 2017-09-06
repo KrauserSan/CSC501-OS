@@ -11,9 +11,12 @@
  * chprio  --  change the scheduling priority of a process
  *------------------------------------------------------------------------
  */
+
+extern unsigned long ctr1000;
 SYSCALL chprio(int pid, int newprio)
-{
-	if(flag){
+{	
+	unsigned long start = ctr1000;
+	if(flag==2){
 		sysFreq[currpid][1]++;
 	}
 	STATWORD ps;    
@@ -27,5 +30,9 @@ SYSCALL chprio(int pid, int newprio)
 	}
 	pptr->pprio = newprio;
 	restore(ps);
+	unsigned long stop = ctr1000 - start;
+	if(flag==2){
+		sysTime[currpid][1] = sysTime[currpid][1] + stop;
+	}
 	return(newprio);
 }

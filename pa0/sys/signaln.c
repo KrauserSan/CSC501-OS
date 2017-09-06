@@ -12,9 +12,11 @@
  *  signaln -- signal a semaphore n times
  *------------------------------------------------------------------------
  */
+extern unsigned long ctr1000;
 SYSCALL signaln(int sem, int count)
 {
-	if(flag){
+	unsigned long start = ctr1000;
+	if(flag==2){
 		sysFreq[currpid][17]++;
 	}
 	STATWORD ps;    
@@ -31,5 +33,9 @@ SYSCALL signaln(int sem, int count)
 			ready(getfirst(sptr->sqhead), RESCHNO);
 	resched();
 	restore(ps);
+	unsigned long stop = ctr1000 - start;
+	if(flag==2){
+		sysTime[currpid][17] = sysTime[currpid][17] + stop;
+	}
 	return(OK);
 }

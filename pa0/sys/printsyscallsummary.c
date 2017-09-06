@@ -16,20 +16,20 @@ char sysname[27][30] = {"freemem","chprio","getpid","getprio","gettime","kill",
 
 void syscallsummary_start(){
 	init();
-	flag = 1;
-
+	flag = 2;
 }
 
 void syscallsummary_stop(){
-	flag = 0;
+	flag = 1;
 }
 
 void init(){
 	int i;
 	int j;
-	for(i = 0; i<numproc;i++){
+	for(i = 0; i<NPROC;i++){
 		for(j = 0;j<27;j++){
 			sysFreq[i][j] = 0;
+			sysTime[i][j] = 0;
 		}
 	}
 	
@@ -39,12 +39,15 @@ void printsyscallsummary(){
 	int i;
 	int j;
 	for(i = 0; i<NPROC; i++){
-		kprintf("Process [pid:%s]\n",proctab[i].pname);
-		for(j = 0;j<27;j++){
-			kprintf("Syscall: %s, count: %d, average execution time:(ms)\n",
-				sysname[j],sysFreq[i][j]);
+		if(strlen(proctab[i].pname)){
+			kprintf("\nProcess [pid:%s %d]\n",proctab[i].pname, i);
+			for(j = 0;j<27;j++){
+				if(sysFreq[i][j]){
+					kprintf("Syscall: %s, count: %d, average execution time: %d(ms)\n",
+						sysname[j],sysFreq[i][j],sysTime[i][j]);
+				}
+			}
 		}
-		
 	}
 }
 

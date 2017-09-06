@@ -10,9 +10,11 @@
  *  send  --  send a message to another process
  *------------------------------------------------------------------------
  */
+extern unsigned long ctr1000;
 SYSCALL	send(int pid, WORD msg)
 {
-	if(flag){
+	unsigned long start = ctr1000;
+	if(flag==2){
 		sysFreq[currpid][12]++;
 	}
 	STATWORD ps;    
@@ -33,5 +35,9 @@ SYSCALL	send(int pid, WORD msg)
 		ready(pid, RESCHYES);
 	}
 	restore(ps);
+	unsigned long stop = ctr1000 - stop;
+	if(flag==2){
+		sysTime[currpid][12] = sysTime[currpid][12] + stop;
+	}
 	return(OK);
 }

@@ -2,7 +2,6 @@
 
 #include <conf.h>
 #include <kernel.h>
-#include <proc.h>
 #include <mem.h>
 #include <stdio.h>
 #include "lab0.h"
@@ -11,9 +10,12 @@
  *  freemem  --  free a memory block, returning it to memlist
  *------------------------------------------------------------------------
  */
+
+extern unsigned long ctr1000;
 SYSCALL	freemem(struct mblock *block, unsigned size)
 {
-	if(flag){
+	unsigned long start = ctr1000;
+	if(flag==2){
 		sysFreq[currpid][0]++;
 	}
 	STATWORD ps;    
@@ -47,5 +49,9 @@ SYSCALL	freemem(struct mblock *block, unsigned size)
 		q->mnext = p->mnext;
 	}
 	restore(ps);
+	unsigned long stop = ctr1000 - start;
+	if(flag == 2){
+		sysTime[currpid][0] = sysTime[currpid][0] + stop;
+	}
 	return(OK);
 }

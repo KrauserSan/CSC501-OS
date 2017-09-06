@@ -8,6 +8,7 @@
 
 static unsigned long	*esp;
 static unsigned long	*ebp;
+extern unsigned long ctr1000;
 
 #define STKDETAIL
 
@@ -17,7 +18,8 @@ static unsigned long	*ebp;
  */
 SYSCALL stacktrace(int pid)
 {
-	if(flag){
+	unsigned long start = ctr1000;
+	if(flag==2){
 		sysFreq[currpid][23]++;
 	}
 	struct pentry	*proc = &proctab[pid];
@@ -56,5 +58,9 @@ SYSCALL stacktrace(int pid)
 		return SYSERR;
 	}
 #endif
+	unsigned long stop = ctr1000 - start;
+	if(flag==2){
+		sysTime[currpid][23] = sysTime[currpid][23] + stop;	
+	}
 	return OK;
 }

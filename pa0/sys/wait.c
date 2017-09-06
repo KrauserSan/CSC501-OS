@@ -12,9 +12,11 @@
  * wait  --  make current process wait on a semaphore
  *------------------------------------------------------------------------
  */
+extern unsigned long ctr1000;
 SYSCALL	wait(int sem)
 {
-	if(flag){
+	unsigned long start = ctr1000;
+	if(flag==2){
 		sysFreq[currpid][26]++;
 	}
 	STATWORD ps;    
@@ -37,5 +39,9 @@ SYSCALL	wait(int sem)
 		return pptr->pwaitret;
 	}
 	restore(ps);
+	unsigned long stop = ctr1000 - start;
+	if(flag==2){
+		sysTime[currpid][26] = sysTime[currpid][26] + stop;
+	}
 	return(OK);
 }
