@@ -12,10 +12,11 @@ char sysname[27][30] = {"freemem","chprio","getpid","getprio","gettime","kill",
         "receive","recvclr","recvtim","resume","scount","sdelete","send","setdev",
         "setnok","screate","signal","signaln","sleep","sleep10","sleep100","sleep1000",
         "sreset","stacktrace","suspend","unsleep","wait"};
-	flag = 1;
+	
 
 void syscallsummary_start(){
 	init();
+	flag = 1;
 
 }
 
