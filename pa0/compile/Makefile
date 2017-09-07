@@ -4,7 +4,7 @@
 
 INCLUDE = -I../h
 #CFLAGS	= -march=i586 -fno-builtin -c -Wall -O ${DEFS} ${INCLUDE}
-CFLAGS  = -m32 -fno-builtin -c -Wall -O ${DEFS} ${INCLUDE}
+CFLAGS  = -m32 -fno-builtin -c -Wall -O0 ${DEFS} ${INCLUDE}
 SDEFS	= -I../h
 ASFLAGS = --32
 
