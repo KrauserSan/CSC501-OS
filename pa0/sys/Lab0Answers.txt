@@ -64,7 +64,8 @@ before and after calling of the printtos() function.
 Question 3.
 
 The byte order adopted by the host machine is little endian. 
-This can be found in printtos() functions. Adding (int) 1 to the esp value of 0xffefa0 makes it 0xffefa4. So, the 4 bytes are added at the right side.
+This can be found in printtos() functions. Adding (int) 1 to the esp value of 0xffefa0 makes it 0xffefa4. 
+So, the 4 bytes are added at the right side.
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -89,6 +90,9 @@ Example. popa
 
 Question 5.
 
-The result does not show the local variables declared in the printtos function. This is because the compiler optimization which is enabled will not push locally declared variables onto the stack in order to optimize the memory allocation as the variables are not used in the code. If we disable the compiler optimization, the compiler would push the locally declared variables onto the stack and we can print them with a fixed offset from the base pointer value pushed onto the stack.
+The result does not show the local variables declared in the printtos function. 
+This is because the compiler optimization is enabled because of which the locally declared variables are not pushed onto the stack in order to optimize the 
+memory allocation as the variables are not used in the code. If we disable the compiler optimization, the compiler would push the locally 
+declared variables onto the stack and we can print them with a fixed offset from the base pointer value pushed onto the stack.
  
 
