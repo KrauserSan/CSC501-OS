@@ -1,0 +1,94 @@
+Question 1.
+Assuming text segment begins at 0x0.
+According to the information received from printsegaddress function, 
+text segment ends at 0x0001bdc3
+data segment begins at 0x0001bdc7
+data segment ends at 0x00020878
+bss segment begins at 0x0002087c
+bss segment ends at 0x00028f54
+
+According to the information received from printprocstks function,
+Each of the stack has a limit of 4096B. 
+For proc X, 
+base = 0x00ffdff8
+limit = 0x00ffcffc
+
+For Proc Main,
+base = 0x00ffeff8
+limit = 0x00ffdffc
+
+The memory layout will be as follows:
+
+	 _______________ _______________ _______________ _______________ _______________ _______________________________
+	|		|		|		|		|		|				|
+	|  text segment	|  data segment	|  bss segment	|     heap	|  Free Space	|     	     Stack		|
+	|_______________|_______________|_______________|_______________|_______________|_______________________________|		 			
+
+			 ^		 ^		 ^				 ^				^
+			 |		 |		 |				 |				|
+			 |		 |		 |			 	 |				|
+		       etext	       edata		end			     proc X limit		   proc Main base
+		    0x0001bdc7	    0x0002087c	     0x00028f58			     0x00ffcffc			     0x00ffeff8
+
+After running printprocstks function, I noticed that every process gets a fixed length stack. 
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Question 2.
+
+TOS before calling printtos() = 0x00ffeff4
+TOS after calling the printtos() = 0x00ffefec
+Difference between the two points = 0x08. 
+
+	| stack content	|
+	| of main() 	| <- TOS in main()
+	| pushed last	|
+	|		|
+	+---------------+
+	|		|
+	| Return address|   
+	| of main()	| <- When printtos is called. Pushed by call instruction
+	|		|
+	+---------------+
+	|		|
+	| old EBP value | <-  TOS after calling printtos. Set by called function.
+	| is pushed	|
+	|		|
+	+---------------+
+
+So, the return address of main() and the old EBP value are pushed onto the stack between the points
+before and after calling of the printtos() function.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Question 3.
+
+The byte order adopted by the host machine is little endian. 
+This can be found in printtos() functions. Adding (int) 1 to the esp value of 0xffefa0 makes it 0xffefa4. So, the 4 bytes are added at the right side.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Question 4.
+
+mov : mov instruction copies data from first operand to the item mentioned in second operand. 
+Example. movl %ebp, %eax -> copies content of register ebp into register eax.
+
+push : pushes the operand on top of the stack by decreasing the value of esp by 4 and adding the data of the operand in the memory address of %esp.
+Example. push %ebp -> pushes the content of register ebp on top of the stack. 
+
+pusha : pushes all the general purposes registers onto the stack in the following order - AX, CX, DX, BX, SP, BP, SI, DI. 
+Example. pusha
+
+pop : removes the data from the top of the stack into the operand. Content at the memory address of %esp is removed and increments the value of %esp by 4.
+Example. pop %eax -> pops the top element of the stack and puts it into %eax register.
+
+popa : Removes all the general purpose registers from the stack in the reverse order of pusha, i.e, DI, SI, BP, SP, BX, DX, CX, AX.
+Example. popa
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Question 5.
+
+The result does not show the local variables declared in the printtos function. This is because the compiler optimization which is enabled will not push locally declared variables onto the stack in order to optimize the memory allocation as the variables are not used in the code. If we disable the compiler optimization, the compiler would push the locally declared variables onto the stack and we can print them with a fixed offset from the base pointer value pushed onto the stack.
+ 
+
