@@ -1,100 +1,162 @@
 /* resched.c  -  resched */
 
+
+
 #include <conf.h>
+
 #include <kernel.h>
+
 #include <proc.h>
+
 #include <q.h>
+
 #include <sched.h>
+
 #include <math.h>
 
 
+
+
+
 unsigned long currSP;	/* REAL sp of current process */
+
 extern int ctxsw(int, int, int, int);
+
 /*-----------------------------------------------------------------------
+
  * resched  --  reschedule processor to highest priority ready process
+
  *
+
  * Notes:	Upon entry, currpid gives current process id.
+
  *		Proctab[currpid].pstate gives correct NEXT state for
+
  *			current process if other than PRREADY.
+
  *------------------------------------------------------------------------
+
  */
+
 int resched()
+
 {
+
 	register struct	pentry	*optr;	/* pointer to old process entry */
+
 	register struct	pentry	*nptr;	/* pointer to new process entry */
 
+
+
 	/*---------------------my changes-------------------------------*/
+
     	
-	optr = &proctab[currpid];
+
+	    optr = &proctab[currpid];
+
     
-    if(getschedclass() == EXPDISTSCHED){
-    
-	struct qent *queue;
-	queue = &(q[q[rdyhead].qnext]);
+
+	    if(getschedclass() == EXPDISTSCHED){
+
 	
-	int randprio = (int) expdev(0.1);
+		int randprio = (int) expdev(0.1);
+
+		if (optr->pstate == PRCURR) {
 	
-	if(randprio<firstkey(rdyhead)){
-		int headpid = getfirst(rdyhead); 
-		if (optr->pstate == PRCURR) {
 			optr->pstate = PRREADY;
+		
 			insert(currpid,rdyhead,optr->pprio);
+
 		}		
-		nptr = &proctab[ (currpid = headpid) ];
-		nptr->pstate = PRCURR;		/* mark it currently running	*/
-	}else if(randprio>lastkey(rdytail)){
-		int tailpid = getlast(rdytail); 
-		if (optr->pstate == PRCURR) {
-			optr->pstate = PRREADY;
-			insert(currpid,rdyhead,optr->pprio);
-		}		
-		nptr = &proctab[ (currpid = tailpid)];
-		nptr->pstate = PRCURR;		/* mark it currently running	*/
-	}else{
-		while(queue->qnext<NPROC){
-			int currentpid = q[queue->qprev].qnext;
-			if(randprio<queue->qkey){
-				if (optr->pstate == PRCURR) {
-					optr->pstate = PRREADY;
-					insert(currpid,rdyhead,optr->pprio);
-				}		
-				nptr = &proctab[ (currpid = dequeue(currentpid))];
-				nptr->pstate = PRCURR;		/* mark it currently running	*/
-				break;
+
+		int head = q[rdyhead].qnext;
+
+		if(randprio<firstkey(rdyhead)){
+
+			nptr = &proctab[ (currpid = getfirst(rdyhead)) ];
+
+			nptr->pstate = PRCURR;		/* mark it currently running	*/
+
+		}else if(randprio>lastkey(rdytail)){
+	
+			nptr = &proctab[ (currpid = getlast(rdytail))];
+
+			nptr->pstate = PRCURR;		/* mark it currently running	*/
+
+		}else{
+	
+			while(q[head].qkey<randprio){
+	
+				head = q[head].qnext;
 			}
-			queue = &(q[queue->qnext]);
+			nptr = &proctab[ (currpid = dequeue(head))];
+
+			nptr->pstate = PRCURR;		/* mark it currently running	*/
+
 		}
-	}
-    }else if(getschedclass()==LINUXSCHED){
+
+	    }else if(getschedclass()==LINUXSCHED){
+
     
-    }else{
 
-	/* no switch needed if current process priority higher than next*/
-	if ( ( (optr= &proctab[currpid])->pstate == PRCURR) &&
-	   (lastkey(rdytail)<optr->pprio)) {
-		return(OK);
-	}
+	    }else{
+
+
+
+		/* no switch needed if current process priority higher than next*/
+
+		if ( ( (optr= &proctab[currpid])->pstate == PRCURR) &&
+
+		   (lastkey(rdytail)<optr->pprio)) {
+
+			return(OK);
+
+		}
+
 	
-	/* force context switch */
 
-	if (optr->pstate == PRCURR) {
-		optr->pstate = PRREADY;
-		insert(currpid,rdyhead,optr->pprio);
-	}
+		/* force context switch */
 
-	/* remove highest priority process at end of ready list */
 
-	nptr = &proctab[ (currpid = getlast(rdytail)) ];
-	nptr->pstate = PRCURR;		/* mark it currently running	*/
-    }
+
+		if (optr->pstate == PRCURR) {
+
+			optr->pstate = PRREADY;
+
+			insert(currpid,rdyhead,optr->pprio);
+
+		}
+
+
+
+		/* remove highest priority process at end of ready list */
+
+
+
+		nptr = &proctab[ (currpid = getlast(rdytail)) ];
+
+		nptr->pstate = PRCURR;		/* mark it currently running	*/
+
+	    }
+
 		
 
+
+
 #ifdef	RTCLOCK
+
 	preempt = QUANTUM;		/* reset preemption counter	*/
+
 #endif
+
 	
+
 	ctxsw((int)&optr->pesp, (int)optr->pirmask, (int)&nptr->pesp, (int)nptr->pirmask);
+
 	
+
 	/* The OLD process returns here when resumed. */
+
 	return OK;
+
 }

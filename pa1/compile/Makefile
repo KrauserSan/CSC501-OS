@@ -387,8 +387,8 @@ kprintf.o: ../sys/kprintf.c /usr/include/stdc-predef.h ../h/conf.h \
 kputc.o: ../sys/kputc.c /usr/include/stdc-predef.h ../h/conf.h \
  ../h/kernel.h ../h/systypes.h ../h/mem.h ../h/tty.h
 main.o: ../sys/main.c /usr/include/stdc-predef.h ../h/conf.h \
- ../h/kernel.h ../h/systypes.h ../h/mem.h ../h/proc.h ../h/stdio.h \
- ../h/math.h
+ ../h/kernel.h ../h/systypes.h ../h/mem.h ../h/q.h ../h/sched.h \
+ ../h/stdio.h ../h/math.h
 mark.o: ../sys/mark.c /usr/include/stdc-predef.h ../h/conf.h \
  ../h/kernel.h ../h/systypes.h ../h/mem.h ../h/mark.h
 math.o: ../sys/math.c /usr/include/stdc-predef.h ../h/stdio.h ../h/math.h
