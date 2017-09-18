@@ -1,146 +1,109 @@
+
 /* resched.c  -  resched */
 
 
-
 #include <conf.h>
-
 #include <kernel.h>
-
 #include <proc.h>
-
 #include <q.h>
-
 #include <sched.h>
-
 #include <math.h>
 
 
-
-
-
 unsigned long currSP;	/* REAL sp of current process */
-
 extern int ctxsw(int, int, int, int);
 
 /*-----------------------------------------------------------------------
-
  * resched  --  reschedule processor to highest priority ready process
-
  *
-
  * Notes:	Upon entry, currpid gives current process id.
-
  *		Proctab[currpid].pstate gives correct NEXT state for
-
  *			current process if other than PRREADY.
-
  *------------------------------------------------------------------------
-
  */
 
 int resched()
-
 {
-
 	register struct	pentry	*optr;	/* pointer to old process entry */
-
 	register struct	pentry	*nptr;	/* pointer to new process entry */
 
+	optr = &proctab[currpid];
 
 
-	/*---------------------my changes-------------------------------*/
+	if(getschedclass() == EXPDISTSCHED){
 
-    	
-
-	    optr = &proctab[currpid];
-
-    
-
-	    if(getschedclass() == EXPDISTSCHED){
-
-	
 		int randprio = (int) expdev(0.1);
 
 		if (optr->pstate == PRCURR) {
-	
+
 			optr->pstate = PRREADY;
-		
+
 			insert(currpid,rdyhead,optr->pprio);
 
 		}		
 
 		int head = q[rdyhead].qnext;
+		if(firstkey(rdyhead)!=lastkey(rdytail)){
+			head = q[head].qnext;
+		}
 
-		if(randprio<firstkey(rdyhead)){
+		if(randprio<q[head].qkey){
 
-			nptr = &proctab[ (currpid = getfirst(rdyhead)) ];
+			nptr = &proctab[ (currpid = dequeue(head)) ];
 
 			nptr->pstate = PRCURR;		/* mark it currently running	*/
 
 		}else if(randprio>lastkey(rdytail)){
-	
+
 			nptr = &proctab[ (currpid = getlast(rdytail))];
 
 			nptr->pstate = PRCURR;		/* mark it currently running	*/
 
 		}else{
-	
+
 			while(q[head].qkey<randprio){
-	
+
 				head = q[head].qnext;
+
 			}
 			nptr = &proctab[ (currpid = dequeue(head))];
 
 			nptr->pstate = PRCURR;		/* mark it currently running	*/
 
 		}
+	}
 
-	    }else if(getschedclass()==LINUXSCHED){
-
-    
-
-	    }else{
+        else{
 
 
+                /* no switch needed if current process priority higher than next*/
 
-		/* no switch needed if current process priority higher than next*/
+                if ( ( (optr= &proctab[currpid])->pstate == PRCURR) &&
 
-		if ( ( (optr= &proctab[currpid])->pstate == PRCURR) &&
+                   (lastkey(rdytail)<optr->pprio)) {
 
-		   (lastkey(rdytail)<optr->pprio)) {
+                        return(OK);
 
-			return(OK);
+                }
 
-		}
-
-	
-
-		/* force context switch */
+                /* force context switch */
 
 
+                if (optr->pstate == PRCURR) {
 
-		if (optr->pstate == PRCURR) {
+                        optr->pstate = PRREADY;
 
-			optr->pstate = PRREADY;
+                        insert(currpid,rdyhead,optr->pprio);
 
-			insert(currpid,rdyhead,optr->pprio);
+                }
 
-		}
+                /* remove highest priority process at end of ready list */
 
+                nptr = &proctab[ (currpid = getlast(rdytail)) ];
 
+                nptr->pstate = PRCURR;          /* mark it currently running    */
 
-		/* remove highest priority process at end of ready list */
-
-
-
-		nptr = &proctab[ (currpid = getlast(rdytail)) ];
-
-		nptr->pstate = PRCURR;		/* mark it currently running	*/
-
-	    }
-
-		
-
+        }
 
 
 #ifdef	RTCLOCK
@@ -148,12 +111,7 @@ int resched()
 	preempt = QUANTUM;		/* reset preemption counter	*/
 
 #endif
-
-	
-
 	ctxsw((int)&optr->pesp, (int)optr->pirmask, (int)&nptr->pesp, (int)nptr->pirmask);
-
-	
 
 	/* The OLD process returns here when resumed. */
 

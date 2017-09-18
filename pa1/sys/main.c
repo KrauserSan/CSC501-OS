@@ -22,6 +22,7 @@ int main() {
 
 	// EXPDISTSCHED
 	setschedclass(EXPDISTSCHED);
+	//kprintf("prio after null = %d, prio before last = %d\n",q[rdyhead].qkey, q[rdytail].qkey); 
 	prA = create(proc_a, 2000, 10, "proc A", 1, 'A');
 	prB = create(proc_b, 2000, 20, "proc B", 1, 'B');
 	prC = create(proc_c, 2000, 30, "proc C", 1, 'C');
