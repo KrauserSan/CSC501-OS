@@ -40,7 +40,7 @@ int resched()
 			optr->pstate = PRREADY;
 			insert(currpid,rdyhead,optr->pprio);
 		}		
-		nptr = &proctab[ (currpid = headpid ];
+		nptr = &proctab[ (currpid = headpid) ];
 		nptr->pstate = PRCURR;		/* mark it currently running	*/
 	}else if(randprio>lastkey(rdytail)){
 		int tailpid = getlast(rdytail); 
@@ -48,7 +48,7 @@ int resched()
 			optr->pstate = PRREADY;
 			insert(currpid,rdyhead,optr->pprio);
 		}		
-		nptr = &proctab[ (currpid = tailpid];
+		nptr = &proctab[ (currpid = tailpid)];
 		nptr->pstate = PRCURR;		/* mark it currently running	*/
 	}else{
 		while(queue->qnext<NPROC){
@@ -58,9 +58,9 @@ int resched()
 					optr->pstate = PRREADY;
 					insert(currpid,rdyhead,optr->pprio);
 				}		
-				nptr = &proctab[ (currpid = dequeue(currentpid)];
+				nptr = &proctab[ (currpid = dequeue(currentpid))];
 				nptr->pstate = PRCURR;		/* mark it currently running	*/
-				return;
+				break;
 			}
 			queue = &(q[queue->qnext]);
 		}
