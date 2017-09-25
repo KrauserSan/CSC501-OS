@@ -71,9 +71,97 @@ int resched()
 			nptr->pstate = PRCURR;		/* mark it currently running	*/
 
 		}
-	}
+	}else if(getschedclass()==LINUXSCHED){
+		int i;
 
-        else{
+		Bool epochflag = TRUE;
+		optr->prevsched = TRUE;
+		optr->quantum = preempt;
+		
+		//kprintf("\nProcName:%s\t preempt: %d\n",optr->pname,optr->quantum);
+
+		if (optr->pstate == PRCURR) {
+			optr->pstate = PRREADY;
+			insert(currpid,rdyhead,optr->pprio);
+			
+		}
+		
+		int head = q[rdyhead].qnext;
+		if(firstkey(rdyhead)!=lastkey(rdytail)){
+			head = q[head].qnext;
+		}
+		int n = head;
+
+		//while(q[n].qkey<=lastkey(rdytail)){
+		//	kprintf("ready queue: %s\t",proctab[n].pname);
+		//	n = q[n].qnext;
+		//}
+		//kprintf("\n");
+
+		for(i=0;i<NPROC;i++){
+			if((proctab[i].pstate==PRREADY||proctab[i].pstate==PRCURR)&&proctab[i].peflag==TRUE&&proctab[i].quantum>0){
+				epochflag = FALSE;
+				break;
+			}
+		}
+		if(epochflag==TRUE){
+			int maximumgoodness = 0;
+			int pgoodness;
+			int next = head;
+			int maxproc = next;
+			while(q[next].qkey<=lastkey(rdytail)){
+				proctab[next].peflag=TRUE;
+				if(proctab[next].prevsched){
+					proctab[next].counter = proctab[next].quantum;
+				}
+				proctab[next].quantum = proctab[next].pprio + (int)(proctab[next].counter)/2;
+				pgoodness = proctab[next].counter + proctab[next].pprio;
+				if(pgoodness>maximumgoodness){
+					maximumgoodness = pgoodness;
+					maxproc = next;
+				}
+				next = q[next].qnext;
+			}
+			nptr = &proctab[ (currpid = dequeue(maxproc))];
+			//kprintf("Proc name: %s, Proc goodness: %d, Epoch Flag = True\n",nptr->pname, maximumgoodness);
+			nptr->pstate = PRCURR;		/* mark it currently running	*/
+			
+		}else{
+
+			int next = head;
+			int maxproc = next;
+			int maxgoodness = 0;
+			int pgoodness;
+			while(q[next].qkey<=lastkey(rdytail)){
+				if(proctab[next].quantum>0){
+					pgoodness = proctab[next].counter + proctab[next].pprio;
+					if(pgoodness>maxgoodness){
+						maxgoodness = pgoodness;
+						maxproc = next;
+					}
+				}
+				next = q[next].qnext;
+			}
+			nptr = &proctab[ (currpid = dequeue(maxproc))];
+			//kprintf("Proc name: %s, Proc goodness: %d, Epoch Flag = False\n",nptr->pname, maxgoodness);
+
+			nptr->pstate = PRCURR;		/* mark it currently running	*/
+			
+		}
+
+		#ifdef	RTCLOCK
+
+		preempt = nptr->quantum;		/* reset preemption counter	*/
+
+		#endif
+		ctxsw((int)&optr->pesp, (int)optr->pirmask, (int)&nptr->pesp, (int)nptr->pirmask);
+
+		/* The OLD process returns here when resumed. */
+
+		return OK;
+		
+
+	}else{
 
 
                 /* no switch needed if current process priority higher than next*/

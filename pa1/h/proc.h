@@ -60,6 +60,10 @@ struct	pentry	{
 	int	fildes[_NFILE];		/* file - device translation	*/
 	int	ppagedev;		/* pageing dgram device		*/
 	int	pwaitret;
+	int 	counter;		/* remaining ticks in a process	*/
+	int 	quantum;			/* total ticks allowed to a process before preemption	*/
+	Bool	prevsched;		/* flag for a process previously scheduled	     	*/
+	Bool	peflag;			/* current epoch flag 		*/
 };
 
 

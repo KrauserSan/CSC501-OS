@@ -7,7 +7,7 @@
 
 #define LOOP	50
 
-int prA, prB, prC;
+int prA, prB, prC,prD;
 int proc_a(char), proc_b(char), proc_c(char);
 int proc(char);
 volatile int a_cnt = 0;
@@ -18,25 +18,48 @@ volatile int s = 0;
 int main() {
 	int i;
 	int count = 0;
+	char buf[8];
+
 	srand(1234);
 
-	// EXPDISTSCHED
-	setschedclass(EXPDISTSCHED);
-	//kprintf("prio after null = %d, prio before last = %d\n",q[rdyhead].qkey, q[rdytail].qkey); 
-	prA = create(proc_a, 2000, 10, "proc A", 1, 'A');
-	prB = create(proc_b, 2000, 20, "proc B", 1, 'B');
-	prC = create(proc_c, 2000, 30, "proc C", 1, 'C');
-	resume(prA);
-	resume(prB);
-	resume(prC);
-	sleep(10);
-	kill(prA);
-	kill(prB);
-	kill(prC);
+	kprintf("Please Input:\n");
+	while ((i = read(CONSOLE, buf, sizeof(buf))) < 1)
+		;
+	buf[i] = 0;
+	s = atoi(buf);
+	kprintf("Get %d\n", s);
 
-	kprintf("\nTest Result: A = %d, B = %d, C = %d\n", a_cnt, b_cnt, c_cnt);
-	
-	shutdown();
+	// EXPDISTSCHED
+	if (s < 2) {
+		setschedclass(EXPDISTSCHED);
+		prA = create(proc_a, 2000, 10, "proc A", 1, 'A');
+		prB = create(proc_b, 2000, 20, "proc B", 1, 'B');
+		prC = create(proc_c, 2000, 30, "proc C", 1, 'C');
+		resume(prA);
+		resume(prB);
+		resume(prC);
+		sleep(10);
+		kill(prA);
+		kill(prB);
+		kill(prC);
+
+		kprintf("\nTest Result: A = %d, B = %d, C = %d\n", a_cnt, b_cnt, c_cnt);
+	}
+	// LINUXSCHED
+	else {
+		setschedclass(LINUXSCHED);
+		resume(prA = create(proc, 2000, 50, "proc A", 1, 'A'));
+		resume(prB = create(proc, 2000, 50, "proc B", 1, 'B'));
+		resume(prC = create(proc, 2000, 50, "proc C", 1, 'C'));
+		resume(prD = create(proc, 2000, 50, "proc D", 1, 'D'));
+		while (count++ < LOOP) {
+			kprintf("M");
+			for (i = 0; i < 1000000; i++)
+				;
+		}
+        kprintf("\n");
+	}
+	//shutdown();
 	return 0;
 }
 
@@ -87,7 +110,7 @@ int proc(char c) {
 	int count = 0;
 
 	while (count++ < LOOP) {
-		kprintf("%c", c);
+		kprintf("%c",c);
 		for (i = 0; i < 1000000; i++)
 			;
 	}
