@@ -1,0 +1,31 @@
+Question 1.
+Exponential Distribution Scheduler
+Advantages - 
+	->Removes starvation of processes with lower priority
+	->Since the method for scheduling a process is randomized, the scheduler is 
+	somewhat fair towards each priority and depends on the lambda value.
+Disadvantages - 
+	->Although the scheduling is randomized, processes with lower priority have 
+	a higher chance of getting scheduled
+
+Linux Like Scheduler
+Advantages - 
+	->Removes the problem of starvation of processes with lower priority
+	->Introduces fairness among processes and every process is guaranteed to run
+	within an epoch and complete its quantum unless suspended, in which case, it
+	can carry forward half of the remaining quantum in the next epoch.
+Disadvantages - 
+	->Since the quantum depends on the priority, the processes with small priority
+	will finish last. 
+	->The overhead involved in reschudling and finding the process with maximum goodness
+	value is high.
+Default Round Robin Scheduler
+Advantages - 
+	->No computational overhead for rescheduling
+Disadvantages - 
+	->Starvation of processes with low priority if higher priority processes	
+	keep getting spawned
+
+Question 2.
+In both the schedulers, the null process is scheduled only when there are no other processes
+in the ready queue. 
